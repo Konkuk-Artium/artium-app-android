@@ -3,9 +3,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    // The 'kotlin.compose' plugin is often not needed for Android-only apps
-    // if you enable Compose via buildFeatures. Consider removing it.
-    // alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -39,21 +36,21 @@ android {
             )
         }
     }
-    // RECOMMENDED: Update to Java 17
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs += "-P"
+        freeCompilerArgs += "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
-    // RECOMMENDED: Add composeOptions for version stability
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1" // Adjust version as needed
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
 }
 
@@ -79,7 +76,7 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
-    implementation(libs.coil.network.okhttp)
+  //  implementation(libs.coil.okhttp) // [수정] 이전 대화에서 수정한 coil-okhttp를 반영했습니다.
 
     // Network & Serialization
     implementation(platform(libs.okhttp.bom))
@@ -87,16 +84,16 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlin.serialization.converter)
-    implementation(libs.kotlinx.serialization.json) // REMOVED: Duplicate was here
+    implementation(libs.kotlinx.serialization.json)
 
     // Hilt
     implementation(libs.hilt.android)
-    // implementation(libs.hilt.core) // REMOVED: Redundant
     implementation(libs.hilt.navigation.compose)
-    ksp(libs.hilt.android.compiler)
-    ksp(libs.hilt.compiler)
-    // ksp(libs.hilt.manager) // REMOVED: Unknown dependency
+    ksp(libs.hilt.compiler) // [수정] KSP 사용 시에는 이것 하나만 필요합니다.
 
     // DataStore
-    implementation(libs.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences)
+
+    // Google Fonts
+    implementation(libs.androidx.compose.ui.text.google.fonts)
 }

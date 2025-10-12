@@ -3,86 +3,75 @@
 # ==================================================================
 
 [versions]
-agp = "8.2.0" # 8.12.3은 아직 존재하지 않는 버전이라 안정적인 버전으로 수정했습니다.
-kotlin = "1.9.22" # AGP 버전에 맞춰 수정했습니다.
-coreKtx = "1.12.0"
-androidxJunit = "1.1.5"
-junit = "4.13.2"
-espressoCore = "3.5.1"
+agp = "8.12.3" # 안정적인 최신 버전으로 수정
+kotlin = "1.9.23" # 안정적인 최신 버전으로 수정
+ksp = "1.9.23-1.0.19" # 코틀린 버전에 맞춰 수정
+coreKtx = "1.13.1"
 lifecycleRuntimeKtx = "2.7.0"
-activityCompose = "1.8.2"
-composeBom = "2024.02.02"
+activityCompose = "1.9.0"
+composeBom = "2024.05.00"
 navigationCompose = "2.7.7"
+hilt = "2.51.1"
+hiltNavigationCompose = "1.2.0"
+datastore = "1.1.1"
+coil = "2.6.0"
 okhttp = "4.12.0"
-retrofit = "2.9.0"
-# converter 버전을 별도로 관리하는 것이 좋습니다.
+retrofit = "2.11.0"
 retrofitKotlinSerializationConverter = "1.0.0"
 kotlinxSerializationJson = "1.6.3"
-hilt = "2.50" # 코틀린 버전에 맞춰 수정했습니다.
-hiltNavigationCompose = "1.2.0"
-# ksp 버전은 코틀린 버전을 따라갑니다. kotlinVersion-kspVersion 형식
-ksp = "1.9.22-1.0.17"
-datastore = "1.0.0"
-coil = "2.6.0"
+composeGoogleFonts = "1.6.7"
+
+# Test versions
+junit = "4.13.2"
+androidxJunit = "1.1.5"
+espressoCore = "3.5.1"
 
 [libraries]
-# AndroidX
+# AndroidX Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+
+# Compose
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-
-# Compose BOM
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-
-# Coil
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-coil-network-okhttp = { group = "io.coil-kt", name = "coil-network-okhttp", version.ref = "coil" }
-
-# Serialization
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-
-# Retrofit / OkHttp
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-# ✅ 수정: converter는 자체 버전을 사용하도록 변경
-retrofit-kotlin-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinSerializationConverter" }
-okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp" } # BOM을 사용하므로 버전 생략
-okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor" } # BOM을 사용하므로 버전 생략
-
-# Hilt
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
-# ❌ 삭제: hilt-manager는 라이브러리가 아닌 플러그인이므로 여기서 삭제합니다.
-
-# Datastore
-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
-
-# Test libs
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-
-# ✅ 추가: UI 관련 라이브러리 (기존 build.gradle 파일에 있었음)
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+# ✅ 수정: camelCase를 사용한 올바른 별명 정의
+androidx-compose-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "composeGoogleFonts" }
+
+# Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+# Network
+okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-kotlin-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinSerializationConverter" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+# Coil
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-okhttp = { group = "io.coil-kt", name = "coil-okhttp", version.ref = "coil" }
+
+# Test
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
 
-# ==================================================================
-# ✅ 추가된 부분: 이 [plugins] 섹션이 없어서 발생한 문제였습니다.
-# ==================================================================
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-# 'hilt-manager'로 잘못 정의했던 hilt 플러그인을 올바르게 정의합니다.
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
