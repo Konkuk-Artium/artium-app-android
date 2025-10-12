@@ -21,6 +21,7 @@ import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.konkuk.artium.ui.theme.ArtiumTheme
+import com.konkuk.artium.ui.theme.Brand_BS_Black_24
 
 @Composable
 fun ArtiumTopBar(
