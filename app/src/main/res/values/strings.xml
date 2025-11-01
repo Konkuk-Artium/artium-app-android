@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Artium</string>
+    <!-- Bottom Navigation -->
+    <string name="nav_archive">My Archive</string>
+    <string name="nav_community">Community</string>
+    <string name="nav_store">Ticket</string>
+    <string name="nav_settings">Setting</string>
 </resources>
