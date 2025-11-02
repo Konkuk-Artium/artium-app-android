@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,37 +36,43 @@ fun ArtiumBottomBar(modifier: Modifier = Modifier) {
 
     val selectedColor = ArtiumTheme.colors.primary
     val unselectedColor = ArtiumTheme.colors.s40
+    Column() {
+       
+        Divider(color = ArtiumTheme.colors.nv80, thickness = 1.dp)
 
-    Row(
-        modifier = modifier
-            .padding(top = 8.dp),
-        horizontalArrangement = Arrangement.SpaceAround//수평방향 동일한 여백 정렬
-    ) {
-        items.forEachIndexed { index, bottomBar ->
-            val isSelected = (selectedItem == index)
-            val color = if (isSelected) selectedColor else unselectedColor
 
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable {
-                        selectedItem = index
-                        // TODO: 네비게이션 로직 연결
-                    },
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Icon(
-                    painter = painterResource(id = icons[index]),
-                    contentDescription = "bottomBar",
-                    tint = color
-                )
-                Text(
-                    text = bottomBar,
-                    color = color,
-                    fontSize = 11.sp
-                )
+        Row(
+            modifier = modifier
+                .padding(top = 8.dp),
+            horizontalArrangement = Arrangement.SpaceAround//수평방향 동일한 여백 정렬
+        ) {
+            items.forEachIndexed { index, bottomBar ->
+                val isSelected = (selectedItem == index)
+                val color = if (isSelected) selectedColor else unselectedColor
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
+                            selectedItem = index
+                            // TODO: 네비게이션 로직 연결
+                        },
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Icon(
+                        painter = painterResource(id = icons[index]),
+                        contentDescription = "bottomBar",
+                        tint = color
+                    )
+                    Text(
+                        text = bottomBar,
+                        color = color,
+                        fontSize = 11.sp
+                    )
+                }
             }
         }
+        Divider(color = ArtiumTheme.colors.nv80, thickness = 1.dp)
     }
 }
 
