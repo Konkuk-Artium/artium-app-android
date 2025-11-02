@@ -1,11 +1,9 @@
 package com.konkuk.artium.ui.feature.archive.component
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,13 +31,8 @@ fun SectionTitle(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally // 중앙 정렬
     ) {
-        // 🔹 상단 구분선
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(lineThickness)
-                .background(lineColor)
-        )
+
+        Divider(color = ArtiumTheme.colors.nv80, thickness = 1.dp)
 
         Text(
             text = text,
@@ -48,13 +41,8 @@ fun SectionTitle(
             modifier = Modifier.padding(vertical = verticalPadding)
         )
 
-        // 🔹 하단 구분선
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(lineThickness)
-                .background(lineColor)
-        )
+        
+        Divider(color = ArtiumTheme.colors.nv80, thickness = 1.dp)
     }
 }
 
