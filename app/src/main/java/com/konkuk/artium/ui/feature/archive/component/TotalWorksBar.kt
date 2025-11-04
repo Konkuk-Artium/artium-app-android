@@ -22,14 +22,14 @@ import com.konkuk.artium.ui.theme.ArtiumTheme
 @Composable
 fun TotalWorksBar(
     modifier: Modifier = Modifier,
-    onCardClick: () -> Unit = {}
+    onTotalButtonClick: () -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onCardClick() },
+            .clickable { onTotalButtonClick() },
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF2F2F2) // 💡 Figma 배경색
+            containerColor = Color(0xFFF2F2F2)
         ),
     ) {
         Row(
@@ -57,5 +57,7 @@ fun TotalWorksBar(
 @Preview(showBackground = true)
 @Composable
 fun TotalWorksBarPreview() {
-    TotalWorksBar()
+    TotalWorksBar(
+        onTotalButtonClick= {}
+    )
 }
