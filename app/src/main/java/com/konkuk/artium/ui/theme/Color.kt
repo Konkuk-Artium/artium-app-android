@@ -3,7 +3,6 @@ package com.konkuk.artium.ui.theme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.intl.Locale
 
 val BG = Color(0xFFF2F2F2)
 val dim = Color(0xFF000000)
@@ -20,6 +19,7 @@ val S70 = Color(0xFFCAA296)
 
 
 // Neutral
+val N87 = Color(0xFFE4D7D4)
 val N92 = Color(0xFFF3E5E2)
 val N94 = Color(0xFFF8EBE7)
 val N96 = Color(0xFFFEF1ED)
@@ -44,6 +44,7 @@ data class ArtiumColors(
     val s50: Color,
     val s60: Color,
     val s70: Color,
+    val n87: Color,
     val n92: Color,
     val n94: Color,
     val n96: Color,
@@ -65,6 +66,7 @@ val defaultArtiumColors = ArtiumColors(
     s50 = S50,
     s60 = S60,
     s70 = S70,
+    n87 = N87,
     n92 = N92,
     n94 = N94,
     n96 = N96,
