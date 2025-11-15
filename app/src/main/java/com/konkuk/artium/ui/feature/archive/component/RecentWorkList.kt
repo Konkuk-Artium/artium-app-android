@@ -1,5 +1,6 @@
 package com.konkuk.artium.ui.feature.archive.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.konkuk.artium.ui.theme.ArtiumTheme
 
 data class RecentWorkItem(
     val id: Int,
@@ -25,7 +27,8 @@ fun RecentWorkList(
 ) {
 
     LazyRow(
-        modifier = modifier,
+        modifier = modifier
+            .background(ArtiumTheme.colors.white),
         contentPadding = PaddingValues(horizontal = 18.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
