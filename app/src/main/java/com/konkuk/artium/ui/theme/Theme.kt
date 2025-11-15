@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.CompositionLocalProvider
+import com.konkuk.artium.ui.theme.defaultArtiumShadows
+
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
@@ -51,8 +53,7 @@ fun ArtiumTheme(
     dynamicColor: Boolean = false, // 기본은 우리 팔레트 사용
     colors: ArtiumColors = defaultArtiumColors,
     typography: ArtiumTypography = defaultArtiumTypography,
-    // 필요 없다면 shadows 부분은 제거하거나 기본값 준비
-    //shadows: ArtiumShadows = defaultArtiumShadows,
+    shadows: ArtiumShadows = defaultArtiumShadows,
     content: @Composable () -> Unit
 ) {
     val m3ColorScheme = when {
@@ -67,7 +68,7 @@ fun ArtiumTheme(
     CompositionLocalProvider(
         LocalArtiumColorsProvider provides colors,
         LocalArtiumTypographyProvider provides typography,
-      //  LocalArtiumShadowProvider provides shadows, // shadows 안 쓰면 이 줄 삭제
+        LocalArtiumShadowProvider provides shadows, // shadows 안 쓰면 이 줄 삭제
     ) {
         MaterialTheme(
             colorScheme = m3ColorScheme,
@@ -87,7 +88,7 @@ object ArtiumTheme {
         @Composable @ReadOnlyComposable
         get() = LocalArtiumTypographyProvider.current
 
-    val shadow: ArtiumShadows
+    val shadows: ArtiumShadows
         @Composable @ReadOnlyComposable
         get() = LocalArtiumShadowProvider.current
 }
