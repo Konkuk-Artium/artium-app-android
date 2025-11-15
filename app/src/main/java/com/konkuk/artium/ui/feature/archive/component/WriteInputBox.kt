@@ -62,7 +62,7 @@ fun WriteInputBox(
 @Preview(showBackground = true)
 @Composable
 fun WriteInputBoxPreview() {
-    var previewText by remember { mutableStateOf("") } 
+    var previewText by remember { mutableStateOf("") }
     ArtiumTheme {
         WriteInputBox(
             textValue = previewText, // 상태 전달
