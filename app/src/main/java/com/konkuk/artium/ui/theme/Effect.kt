@@ -30,9 +30,10 @@ data class ArtiumShadows(
     val shadow01: ShadowGroup,
     val shadow02: ShadowGroup,
     val shadow03: ShadowGroup,
+    val card: ShadowGroup
 )
 
-val defaultArtiumShadow = ArtiumShadows(
+val defaultArtiumShadows = ArtiumShadows(
     shadow01 = ShadowGroup(
         listOf(
             ShadowLayer(0.dp, 4.dp, 8.dp, Color(0xFF222222).copy(alpha = 0.02f)),
@@ -55,10 +56,20 @@ val defaultArtiumShadow = ArtiumShadows(
             ShadowLayer(4.dp, 0.dp, 16.dp, Color(0xFF222222).copy(alpha = 0.04f)),
             ShadowLayer(-4.dp, 0.dp, 16.dp, Color(0xFF222222).copy(alpha = 0.04f)),
         )
+    ),
+    card = ShadowGroup(
+        listOf(
+            ShadowLayer(
+                offsetX = 4.dp,
+                offsetY = 4.dp,
+                blurRadius = 4.dp,
+                color = Color.Black.copy(alpha = 0.25f)
+            )
+        )
     )
 )
 
-val LocalArtiumShadowProvider = staticCompositionLocalOf { defaultArtiumShadow }
+val LocalArtiumShadowProvider = staticCompositionLocalOf { defaultArtiumShadows }
 
 fun Modifier.figmaShadow(
     group: ShadowGroup,
@@ -95,20 +106,6 @@ fun Modifier.figmaShadow(
         }
         // 2) 그림자 레이어 제거
         paint.clearShadowLayer()
-        // 3) 실제 배경(흰색 등) 그리기
-        drawIntoCanvas { canvas ->
-            // 안드로이드 네이티브 Canvas
-            val nc = canvas.nativeCanvas
-            nc.drawRoundRect(
-                0f,
-                0f,
-                size.width,
-                size.height,
-                radiusPx,
-                radiusPx,
-                paint
-            )
-        }
         // 4) 자식 컴포저블(텍스트, 아이콘 등) 그리기
         drawContent()
     }
