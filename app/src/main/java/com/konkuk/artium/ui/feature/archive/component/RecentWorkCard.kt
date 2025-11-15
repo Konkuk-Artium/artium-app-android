@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.konkuk.artium.R
 import com.konkuk.artium.ui.theme.ArtiumTheme
+import com.konkuk.artium.ui.theme.figmaShadow
 
 @Composable
 fun RecentWorkCard(
@@ -55,26 +56,27 @@ fun RecentWorkCard(
 // TODO: 제목길이 ... 줄이기
     val posterResId = mockList.getOrNull(index % mockList.size) ?: R.drawable.poster_tosca
     val dominantColor = Color(0xFFE0E0E0)
+    val shadow = ArtiumTheme.shadows.card
     Box(
         modifier = modifier
             .size(195.dp, 260.dp)
+            .figmaShadow(shadow, cornerRadius = 10.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable { onCardClick() },
         contentAlignment = Alignment.BottomCenter
-        //elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         // 🔹 Composable context 내에서 직접 painterResource 호출
         val painter = painterResource(id = posterResId)
 
 
-        // 1️⃣ 포스터 이미지
+        // 포스터 이미지
         Image(
             painter = painter,
             contentDescription = title,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-        // 2️⃣ 하단 오버레이 박스 (왼쪽 하얀색 → 오른쪽 dominantColor)
+        // 하단 오버레이 박스 (왼쪽 하얀색 → 오른쪽 dominantColor)
         Card(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -96,7 +98,7 @@ fun RecentWorkCard(
                         )
                     )
             ) {
-                // 3️⃣ 제목, 별점, 버튼
+                // 제목, 별점, 버튼
                 Column(
                     modifier = Modifier
                         .padding(8.dp)
@@ -119,7 +121,7 @@ fun RecentWorkCard(
                                 .clickable { onArrowClick() },
                             painter = painterResource(id = R.drawable.ic_button_arrow_right),
                             contentDescription = "자세히 보기",
-                            tint = Color.Unspecified // 원본 색상 그대로
+                            tint = Color.Unspecified
                         )
                     }
 
