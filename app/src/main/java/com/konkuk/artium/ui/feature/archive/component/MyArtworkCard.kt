@@ -26,23 +26,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.konkuk.artium.R
 import com.konkuk.artium.ui.theme.ArtiumTheme
-import com.konkuk.artium.ui.theme.LocalArtiumShadowProvider
 import com.konkuk.artium.ui.theme.figmaShadow
 
 @Composable
 fun MyArtworkCard(
     modifier: Modifier = Modifier,
+    workId: Int,
     title: String,
     date: String,
     thumbnailRes: Int,
-    onArrowClick: () -> Unit = {},
+    // 카드 전체 클릭 시 호출될 콜백 (ID를 받음)
+    onCardClick: (Int) -> Unit = {},
 ) {
     val dominantColor = Color(0xFFE0E0E0)
-    val shadow = LocalArtiumShadowProvider.current.shadow02
+    val shadow = ArtiumTheme.shadows.card
     Card(
         modifier = Modifier
-            .fillMaxWidth()            // Y:4px blur:4px 비슷하게
-                .figmaShadow(shadow, cornerRadius = 12.dp),
+            .fillMaxWidth()
+                .figmaShadow(shadow, cornerRadius = 12.dp)
+        .clickable { onCardClick(workId) },
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = ArtiumTheme.colors.white),
 
@@ -86,7 +88,7 @@ fun MyArtworkCard(
 
             Icon(
                 modifier = modifier
-                    .clickable { onArrowClick() },
+                    .clickable { onCardClick(workId) },
                 painter = painterResource(id = R.drawable.ic_button_arrow_right2),
                 contentDescription = "자세히 보기",
                 tint = Color.Unspecified
@@ -100,6 +102,7 @@ fun MyArtworkCard(
 private fun MyArtworkCardPreview() {
 
     MyArtworkCard(
+        workId = 0,
         title = "오페라<토스카>",
         date = "2025.09.28",
         thumbnailRes = R.drawable.poster_tosca

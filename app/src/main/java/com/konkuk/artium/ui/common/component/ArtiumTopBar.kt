@@ -1,9 +1,12 @@
 package com.konkuk.artium.ui.common.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
@@ -18,24 +21,33 @@ import com.konkuk.artium.ui.theme.Brand_BS_Black_24
 @Composable
 fun ArtiumTopBar(
     title: String = "Artium",
+    actionText: String,
     onActionClick: () -> Unit
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 5.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .background(ArtiumTheme.colors.white)
     ) {
-        Text(
-            text = title,
-            style = Brand_BS_Black_24,
-            color = ArtiumTheme.colors.primary
-        )
-        ActionButton(
-            text = "작품쓰기",
-            onClick = onActionClick
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(ArtiumTheme.colors.white)
+                .padding(horizontal = 15.dp, vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                style = Brand_BS_Black_24,
+                color = ArtiumTheme.colors.primary
+            )
+            ActionButton(
+                text = actionText,
+                onClick = onActionClick
+            )
+        }
+        Divider(modifier = Modifier, thickness = 1.dp, color = ArtiumTheme.colors.nv80)
     }
 }
 
@@ -43,10 +55,11 @@ fun ArtiumTopBar(
 
 @Preview(name = "Generic TitleActionBar", showBackground = true, widthDp = 400)
 @Composable
-private fun Preview_TitleActionBar_Generic() {
+private fun Preview_ArtiumTopBar() {
     MaterialTheme(colorScheme = lightColorScheme()) {
         ArtiumTopBar(
             title = "Artium",
+            actionText = "작품쓰기",
             onActionClick = {}
         )
     }
