@@ -1,6 +1,7 @@
 package com.konkuk.artium.ui.feature.archive.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,23 +38,17 @@ data class Work(
 @Composable
 fun MyViewedWorksScreen(
     modifier: Modifier = Modifier,
+    onNavigateToWriteArtWork: () -> Unit,
+    onNavigateToDetail: (Int) -> Unit
 ) {
-    // ✅ 목업 리스트 (서버 붙기 전)
-    val mockWorks = listOf(
-        R.drawable.poster_tosca,
-        R.drawable.poster_isabelledeganny,
-        R.drawable.poster_gatsby,
-        R.drawable.poster_lifeofpi,
-        R.drawable.poster_werner,
-        R.drawable.poster_onthebeat
-    )
-    val mockTitles = listOf(
-        "오페라 <토스카>",
-        "이자벨 드 가네 : 모먼츠",
-        "위대한 개츠비",
-        "라이프 오브 파이",
-        "워너 브롱크호스트",
-        "온 더 비트"
+    // ✅ 목업 리스트 (ID, 이미지 리소스, 제목) - (임시 ID 0, 1, 2... 부여)
+    val mockItems = listOf(
+        Triple(0, R.drawable.poster_tosca, "오페라 <토스카>"),
+        Triple(1, R.drawable.poster_isabelledeganny, "이자벨 드 가네 : 모먼츠"),
+        Triple(2, R.drawable.poster_gatsby, "위대한 개츠비"),
+        Triple(3, R.drawable.poster_lifeofpi, "라이프 오브 파이"),
+        Triple(4, R.drawable.poster_werner, "워너 브롱크호스트"),
+        Triple(5, R.drawable.poster_onthebeat, "온 더 비트")
     )
 
     Scaffold(
@@ -63,7 +58,9 @@ fun MyViewedWorksScreen(
         topBar = {
             ArtiumTopBar(
                 title = "Artium",
-                onActionClick = {//TODO:작품쓰기화면으로 이동
+                actionText = "작품쓰기",
+                onActionClick = {
+                    onNavigateToWriteArtWork()
                 }
             )
         },
@@ -90,9 +87,12 @@ fun MyViewedWorksScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(mockWorks.zip(mockTitles)) { (resId, title) ->
+                items(mockItems) { (id, resId, title) ->
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.clickable {
+                        onNavigateToDetail(id)
+                        }
                     ) {
                         Image(
                             painter = painterResource(id = resId),
@@ -119,6 +119,9 @@ fun MyViewedWorksScreen(
 @Composable
 private fun MyViewedWorksScreenPreview() {
     ArtiumTheme {
-        MyViewedWorksScreen()
+        MyViewedWorksScreen(
+            onNavigateToWriteArtWork = { /* Preview */ },
+            onNavigateToDetail = { /* Preview */ }
+            )
     }
 }
