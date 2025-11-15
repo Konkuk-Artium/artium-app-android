@@ -1,5 +1,6 @@
 package com.konkuk.artium.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,7 +37,10 @@ fun ArtiumBottomBar(modifier: Modifier = Modifier) {
 
     val selectedColor = ArtiumTheme.colors.primary
     val unselectedColor = ArtiumTheme.colors.s40
-    Column() {
+    Column(
+        modifier = modifier
+        .background(ArtiumTheme.colors.white)
+    ) {
        
         Divider(color = ArtiumTheme.colors.nv80, thickness = 1.dp)
 
