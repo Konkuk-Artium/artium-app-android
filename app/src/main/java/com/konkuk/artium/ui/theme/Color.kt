@@ -26,7 +26,7 @@ val N96 = Color(0xFFFEF1ED)
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 val E40= Color(0xFFBA1A1A)
-val Gray = Color(0xFF424242)
+val Gray = Color(0xFFA09CAB)
 
 // Neutral Variant
 val NV50 = Color(0xFF85736E)
