@@ -96,4 +96,7 @@ dependencies {
 
     // Google Fonts
     implementation(libs.androidx.compose.ui.text.google.fonts)
+
+    // Palette
+    implementation("androidx.palette:palette:1.0.0")
 }

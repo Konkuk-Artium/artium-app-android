@@ -1,23 +1,18 @@
 package com.konkuk.artium.ui.common.component
 
-import android.R.attr.maxLines
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.konkuk.artium.ui.theme.ArtiumTheme
@@ -26,36 +21,33 @@ import com.konkuk.artium.ui.theme.Brand_BS_Black_24
 @Composable
 fun ArtiumTopBar(
     title: String = "Artium",
+    actionText: String,
     onActionClick: () -> Unit
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 5.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .background(ArtiumTheme.colors.white)
     ) {
-        Text(
-            text = title,
-            style = Brand_BS_Black_24,
-            color = ArtiumTheme.colors.primary
-        )
-        Button(
+        Row(
             modifier = Modifier
-                .width(70.dp)
-                .height(35.dp),
-                    onClick = onActionClick,
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = ArtiumTheme.colors.primary),
-            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 10.dp)
+                .fillMaxWidth()
+                .background(ArtiumTheme.colors.white)
+                .padding(horizontal = 15.dp, vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "작품쓰기",
-                style = ArtiumTheme.typography.M_16.copy( // Pretendard Medium 14sp
-                    color = ArtiumTheme.colors.white,
-                    platformStyle = PlatformTextStyle(includeFontPadding = false) // 한글 잘림 방지
-                )
+            Text(
+                text = title,
+                style = Brand_BS_Black_24,
+                color = ArtiumTheme.colors.primary
+            )
+            ActionButton(
+                text = actionText,
+                onClick = onActionClick
             )
         }
+        Divider(modifier = Modifier, thickness = 1.dp, color = ArtiumTheme.colors.nv80)
     }
 }
 
@@ -63,10 +55,11 @@ fun ArtiumTopBar(
 
 @Preview(name = "Generic TitleActionBar", showBackground = true, widthDp = 400)
 @Composable
-private fun Preview_TitleActionBar_Generic() {
+private fun Preview_ArtiumTopBar() {
     MaterialTheme(colorScheme = lightColorScheme()) {
         ArtiumTopBar(
             title = "Artium",
+            actionText = "작품쓰기",
             onActionClick = {}
         )
     }

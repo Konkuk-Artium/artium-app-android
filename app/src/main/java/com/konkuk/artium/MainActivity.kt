@@ -3,45 +3,41 @@ package com.konkuk.artium
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
+import androidx.navigation.compose.rememberNavController
+import com.konkuk.artium.navigation.NavGraph
+import com.konkuk.artium.ui.feature.archive.screen.ArchiveScreen
 import com.konkuk.artium.ui.theme.ArtiumTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        WindowCompat.setDecorFitsSystemWindows(window, true)
         setContent {
             ArtiumTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                // ✅ 네비게이션 컨트롤러 생성
+                val navController = rememberNavController()
+
+                // ✅ 네비게이션 그래프 호출
+                NavGraph(navController = navController)
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     ArtiumTheme {
-        Greeting("Android")
+        ArchiveScreen(
+            onCardClick = {},
+            onArrowClick = {},
+            onButtonClick = {},
+            onNavigateToWriteArtWork = {},
+            onNavigateToDetail = {}
+        )
     }
 }
