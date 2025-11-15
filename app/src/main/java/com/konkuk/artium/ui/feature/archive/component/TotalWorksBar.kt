@@ -35,7 +35,7 @@ fun TotalWorksBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp, 6.dp),
+                .padding(10.dp, 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
