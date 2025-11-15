@@ -35,7 +35,7 @@ fun ActionButton(
     ) {
         Text(
             text = text,
-            style = ArtiumTheme.typography.M_16.copy(
+            style = ArtiumTheme.typography.R_14.copy(
                 color = ArtiumTheme.colors.white,
                 platformStyle = PlatformTextStyle(includeFontPadding = false)
             )
