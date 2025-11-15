@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.konkuk.artium.ui.theme.ArtiumTheme
 
@@ -20,30 +19,22 @@ import com.konkuk.artium.ui.theme.ArtiumTheme
 fun SectionTitle(
     text: String,
     modifier: Modifier = Modifier,
-    lineColor: Color = ArtiumTheme.colors.nv80,
     textColor: Color = ArtiumTheme.colors.p10,
-    lineThickness: Dp = 1.dp,
-    verticalPadding: Dp = 10.dp,
     textStyle: TextStyle = ArtiumTheme.typography.SB_16
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally // 중앙 정렬
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Divider(color = ArtiumTheme.colors.nv80, thickness = 1.dp)
-
         Text(
             text = text,
             style = textStyle,
             color = textColor,
-            modifier = Modifier.padding(vertical = verticalPadding)
         )
-
-        
-        Divider(color = ArtiumTheme.colors.nv80, thickness = 1.dp)
     }
+    Divider(color = ArtiumTheme.colors.nv80, thickness = 1.dp)
 }
 
 
