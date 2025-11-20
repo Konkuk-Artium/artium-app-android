@@ -27,6 +27,7 @@ val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 val E40= Color(0xFFBA1A1A)
 val Gray = Color(0xFFA09CAB)
+val DarkGray = Color(0xFF424242)
 
 // Neutral Variant
 val NV50 = Color(0xFF85736E)
@@ -53,6 +54,7 @@ data class ArtiumColors(
     val nv80: Color,
     val white: Color,
     val gray: Color,
+    val darkGray: Color,
     val black: Color
 )
 
@@ -75,6 +77,7 @@ val defaultArtiumColors = ArtiumColors(
     nv80 = NV80,
     white = White,
     gray = Gray,
+    darkGray = DarkGray,
     black = Black,
 )
 
