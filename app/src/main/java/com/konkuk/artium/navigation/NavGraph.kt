@@ -10,26 +10,12 @@ import com.konkuk.artium.ui.feature.archive.screen.ArchiveScreen
 import com.konkuk.artium.ui.feature.archive.screen.MyArtWorkDetailScreen
 import com.konkuk.artium.ui.feature.archive.screen.MyViewedWorksScreen
 import com.konkuk.artium.ui.feature.archive.screen.WritingArtworkScreen
-
-sealed class Route(val path: String) {
-    object Archive : Route("archive_route")
-    object MyViewedWorks : Route("my_viewed_works_route")
-    object WritingArtwork : Route("writing_artwork_route?workId={workId}") {
-        // 글쓰기 모드: workId 없이 이동하는 경로 문자열 반환
-        fun createWriteRoute() = "writing_artwork_route"
-
-        // 수정 모드: workId를 인수로 받아 이동하는 경로 문자열 반환
-        fun createEditRoute(workId: Int) = "writing_artwork_route?workId=$workId"
-    }
-
-    object MyArtworkDetail : Route("artwork_detail_route/{workId}") {
-        fun createRoute(workId: Int) = "artwork_detail_route/$workId"
-    }
-
-    object Community : Route("community_route")
-    object Ticket : Route("ticket_route")
-    object Setting : Route("setting_route")
-}
+import com.konkuk.artium.ui.feature.community.free.FreeScreen
+import com.konkuk.artium.ui.feature.community.free.QnaScreen
+import com.konkuk.artium.ui.feature.community.screen.ArchiveExploreDetailScreen
+import com.konkuk.artium.ui.feature.community.screen.FreeBoardWritingScreen
+import com.konkuk.artium.ui.feature.community.screen.FreeDetailScreen
+import com.konkuk.artium.ui.feature.community.screen.QnaDetailScreen
 
 @Composable
 fun NavGraph(
@@ -101,5 +87,72 @@ fun NavGraph(
                 onBackClick = { navController.popBackStack() }
             )
         }
+        // QnA 목록
+        composable("qna/list") {
+            QnaScreen(
+                onNavigateToDetail = { id ->
+                    navController.navigate("qna/detail/$id")
+                }
+            )
+        }
+
+// QnA 상세
+        composable(
+            "qna/detail/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
+            QnaDetailScreen(
+                postId = id,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+// 자유게시판 목록
+        composable("free/list") {
+            FreeScreen(
+                onWriteClick = {
+                    navController.navigate("free/write")
+                },
+                onPostClick = { id ->
+                    navController.navigate("free/detail/$id")
+                }
+            )
+        }
+
+// 자유게시판 상세
+        composable(
+            "free/detail/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
+            FreeDetailScreen(
+                postId = id,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        // 자유게시판 글쓰기
+        composable("free/write") {
+            FreeBoardWritingScreen(
+                onBackClick = { navController.popBackStack() },
+                onSubmit = {
+                    navController.popBackStack() // 저장 후 목록으로
+                }
+            )
+        }
+
+
+// 아카이브 상세 (둘러보기)
+        composable(
+            "archive/detail/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { entry ->
+            val id = entry.arguments?.getInt("id") ?: 0
+            ArchiveExploreDetailScreen(
+                id = id,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
     }
 }
