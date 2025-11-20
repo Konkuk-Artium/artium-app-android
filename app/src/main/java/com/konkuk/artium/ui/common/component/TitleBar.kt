@@ -29,43 +29,50 @@ fun TitleBar(
     onValueChange: (String) -> Unit
 ) {
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column {
-            Row(modifier = modifier,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = "Title",
-                    style = ArtiumTheme.typography.SB_18,
-                    color = ArtiumTheme.colors.nv50
-                )
-                TextField(
-                    value = value,
-                    onValueChange = onValueChange,
-                    singleLine = true,
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,   // 기본 선 제거
-                        unfocusedIndicatorColor = Color.Transparent, // 기본 선 除去
-                        cursorColor = ArtiumTheme.colors.nv50
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding()
+    Column(modifier = modifier.fillMaxWidth()) {
 
-                )
-            }
-            Divider(
+        // Title + TextField 영역
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Title",
+                style = ArtiumTheme.typography.SB_18,
+                color = ArtiumTheme.colors.s40
+            )
+
+            // 글 제목 입력 부분
+            TextField(
+                value = value,
+                onValueChange = onValueChange,
+                singleLine = true,
+
+                // Material3 공식 Colors
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = ArtiumTheme.colors.primary,
+                    focusedTextColor = ArtiumTheme.colors.s40,
+                    unfocusedTextColor = ArtiumTheme.colors.s40
+                ),
+
                 modifier = Modifier
-                    .padding(top = 8.dp)
-                    .fillMaxWidth(),
-                thickness = 1.dp,
-                color = ArtiumTheme.colors.nv50
+                    .fillMaxWidth()
+                    .padding(start = 12.dp)
             )
         }
+
+        // TitleBar 하단 구분선
+        Divider(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .fillMaxWidth(),
+            thickness = 1.dp,
+            color = ArtiumTheme.colors.nv80
+        )
     }
 }
 
