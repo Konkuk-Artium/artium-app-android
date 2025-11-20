@@ -33,9 +33,8 @@ import com.konkuk.artium.ui.theme.Brand_BS_Black_24
 @Composable
 fun CommunityScreen(
     modifier: Modifier = Modifier,
-    onNavigateToQnaList: () -> Unit = {},
-    onNavigateToFreeList: () -> Unit = {},
-    onNavigateToArchiveExplore: (Int) -> Unit = {},
+    onNavigateToProfile: () -> Unit = {},
+    onNavigateToBookingHistory: () -> Unit = {}
 ) {
     var tab by remember { mutableStateOf(0) }
 
@@ -112,7 +111,7 @@ fun CommunityScreen(
                         post2Title = "",
                         post2Content = "",
                         post2Comment = 0,
-                        onArrowClick = onNavigateToQnaList
+                        onArrowClick = onNavigateToBookingHistory
                     )
                     Spacer(modifier = modifier.padding(12.dp))
                     FreeBoardCard(
@@ -125,12 +124,14 @@ fun CommunityScreen(
                         post3Title = "",
                         post3Like = null,
                         post3Comment = 0,
-                        onArrowClick = onNavigateToFreeList
+                        onArrowClick = onNavigateToBookingHistory
                     )
                 } else {
                     ArchiveExploreGrid(
                         mockItems = mockItems,
-                        onNavigateToDetail = { id -> onNavigateToArchiveExplore(id) }
+                        onNavigateToDetail = { id ->
+                            // TODO: 상세 페이지 이동
+                        }
                     )
                 }
             }
@@ -145,6 +146,8 @@ fun CommunityScreenPreview() {
     ArtiumTheme {
         // Preview는 navigation 함수 동작 불필요 → 빈 람다로 전달
         CommunityScreen(
+            onNavigateToProfile = {},
+            onNavigateToBookingHistory = {}
         )
     }
 }
