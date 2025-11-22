@@ -10,24 +10,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.konkuk.artium.ui.common.component.ActionButton
 import com.konkuk.artium.ui.common.component.HeaderBar
 import com.konkuk.artium.ui.feature.community.component.QnaFreePostItem
+import com.konkuk.artium.ui.feature.community.viewmodel.CommunityViewModel
 import com.konkuk.artium.ui.theme.ArtiumTheme
-
-data class FreePost(
-    val id: Int,
-    val title: String,
-    val time: String,
-    val author: String,
-    val like: Int,
-    val comment: Int,
-    val content: String
-)
 
 @Composable
 fun FreeScreen(
@@ -36,16 +30,13 @@ fun FreeScreen(
     onWriteClick: () -> Unit = {},
     onPostClick: (Int) -> Unit = {}
 ) {
+    val viewModel: CommunityViewModel = hiltViewModel()
 
-    val mockList = listOf(
-        FreePost(1, "오늘 공연 보신 분들 어땠나요?", "5분 전", "익명", 8, 8, "본문 예시 1"),
-        FreePost(2, "현대미술관 신작전 보신 분 계신가요?", "10분 전", "익명", 1, 1, "본문 예시 2"),
-        FreePost(3, "어제 O O 콘서트 다녀왔는데 무대가...", "30분 전", "익명", 8, 8, "본문 예시 3"),
-        FreePost(4, "티켓팅 꿀팁 정리했습니다!", "1시간 전", "익명", 20, 3, "본문 예시 4"),
-        FreePost(5, "올해 꼭 보고 싶은 공연 리스트 공유해요", "1일 전", "익명", 8, 20, "본문 예시 5"),
-        FreePost(6, "전시 보러 갈 때 다들 혼자 가세요?", "3일 전", "익명", 1, 2, "본문 예시 6"),
-        FreePost(7, "무료 관람 가능한 전시 리스트 모음", "4일 전", "익명", 10, 8, "본문 예시 7"),
-    )
+    LaunchedEffect(Unit) {
+        viewModel.load()
+    }
+
+    val state = viewModel.uiState.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -71,17 +62,40 @@ fun FreeScreen(
                 .background(Color(0xFFFDFDFD))
                 .fillMaxSize()
         ) {
-            items(mockList) { post ->
+
+            // 로딩 UI
+            if (state.isLoading) {
+                item {
+                    androidx.compose.material3.Text(
+                        "로딩 중...",
+                        modifier = Modifier.padding(20.dp)
+                    )
+                }
+            }
+
+            // 에러 UI
+            state.error?.let { errorMsg ->
+                item {
+                    androidx.compose.material3.Text(
+                        "에러: $errorMsg",
+                        color = Color.Red,
+                        modifier = Modifier.padding(20.dp)
+                    )
+                }
+            }
+
+            // 실제 서버 데이터 목록 표시
+            items(state.posts) { post ->
                 Column(
                     modifier = Modifier.border(0.dp, Color.Transparent)
                 ) {
                     QnaFreePostItem(
                         title = post.title,
-                        timeAgo = post.time,
-                        author = post.author,
-                        likeCount = post.like,
-                        commentCount = post.comment,
-                        showLike = true,
+                        timeAgo = post.createdAt,
+                        author = post.category,     // 서버 데이터 구조에 따라 수정 가능
+                        likeCount = 0,              // 서버에 like 없으면 0
+                        commentCount = post.commentCount,
+                        showLike = false,
                         onClick = { onPostClick(post.id) }
                     )
                     Divider(
@@ -93,6 +107,7 @@ fun FreeScreen(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

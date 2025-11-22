@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.konkuk.artium.ui.theme.ArtiumTheme
 
 data class RecentWorkItem(
-    val id: Int,
+    val id: Long,
     val title: String,
     val imageUrl: String,
     val rating: Float

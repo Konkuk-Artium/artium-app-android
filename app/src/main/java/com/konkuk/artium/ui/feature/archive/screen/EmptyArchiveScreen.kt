@@ -16,8 +16,11 @@ import com.konkuk.artium.ui.theme.Brand_BS_Black_24
 
 @Composable
 fun EmptyArchiveScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier, // 부모(Box)에서 넘겨준 정렬 속성을 받음
+    // ▼▼▼ 이 파라미터를 추가해야 합니다! ▼▼▼
+    onNavigateToWriteArtWork: () -> Unit
 ) {
+
     // 미기록
     Column(
         modifier = modifier
@@ -47,6 +50,8 @@ fun EmptyArchiveScreen(
 @Composable
 private fun EmptyArchiveScreenPreview() {
     ArtiumTheme {
-        EmptyArchiveScreen()
+        EmptyArchiveScreen(
+            onNavigateToWriteArtWork = {}
+        )
     }
 }

@@ -10,26 +10,8 @@ import com.konkuk.artium.ui.feature.archive.screen.ArchiveScreen
 import com.konkuk.artium.ui.feature.archive.screen.MyArtWorkDetailScreen
 import com.konkuk.artium.ui.feature.archive.screen.MyViewedWorksScreen
 import com.konkuk.artium.ui.feature.archive.screen.WritingArtworkScreen
-
-sealed class Route(val path: String) {
-    object Archive : Route("archive_route")
-    object MyViewedWorks : Route("my_viewed_works_route")
-    object WritingArtwork : Route("writing_artwork_route?workId={workId}") {
-        // 글쓰기 모드: workId 없이 이동하는 경로 문자열 반환
-        fun createWriteRoute() = "writing_artwork_route"
-
-        // 수정 모드: workId를 인수로 받아 이동하는 경로 문자열 반환
-        fun createEditRoute(workId: Int) = "writing_artwork_route?workId=$workId"
-    }
-
-    object MyArtworkDetail : Route("artwork_detail_route/{workId}") {
-        fun createRoute(workId: Int) = "artwork_detail_route/$workId"
-    }
-
-    object Community : Route("community_route")
-    object Ticket : Route("ticket_route")
-    object Setting : Route("setting_route")
-}
+import com.konkuk.artium.ui.feature.community.screen.ArchiveExploreDetailScreen
+import com.konkuk.artium.ui.feature.community.screen.FreeDetailScreen
 
 @Composable
 fun NavGraph(
@@ -37,6 +19,8 @@ fun NavGraph(
     start: Route = Route.Archive
 ) {
     NavHost(navController = navController, startDestination = start.path) {
+
+        // 1. 아카이브 메인 화면
         composable(Route.Archive.path) {
             ArchiveScreen(
                 onCardClick = { navController.navigate(Route.MyViewedWorks.path) },
@@ -45,42 +29,39 @@ fun NavGraph(
                 onNavigateToWriteArtWork = {
                     navController.navigate(Route.WritingArtwork.createWriteRoute())
                 },
-                // ArchiveScreen에 콜백 전달
                 onNavigateToDetail = { workId ->
-                    navController.navigate(Route.MyArtworkDetail.createRoute(workId))
+                    navController.navigate(Route.MyArtworkDetail.createRoute(workId.toInt()))
                 },
             )
         }
 
+        // 2. 내가 본 작품 목록
         composable(Route.MyViewedWorks.path) {
             MyViewedWorksScreen(
                 onNavigateToWriteArtWork = {
                     navController.navigate(Route.WritingArtwork.createWriteRoute())
                 },
                 onNavigateToDetail = { workId ->
-                    // ❗️ 나중에 실제 데이터 ID로 교체해야 합니다.
-                    // (지금은 임시 목업 ID 0, 1, 2...가 전달됩니다)
                     navController.navigate(Route.MyArtworkDetail.createRoute(workId))
                 }
             )
         }
 
+        // 3. 글쓰기 / 수정
         composable(
             route = Route.WritingArtwork.path,
             arguments = listOf(
                 navArgument("workId") {
                     type = NavType.IntType
-                    defaultValue = -1 // '쓰기' 모드 기본값
+                    defaultValue = -1
                 }
             )
-        ) { backStackEntry ->
-
-            val artworkId = backStackEntry.arguments?.getInt("workId") ?: -1
-
+        ) { entry ->
+            val workId = entry.arguments?.getInt("workId") ?: -1
             WritingArtworkScreen(
-                artworkId = artworkId,
-                onSaveComplete = { newWorkId ->
-                    navController.navigate(Route.MyArtworkDetail.createRoute(newWorkId)) {
+                artworkId = workId,
+                onSaveComplete = { newId ->
+                    navController.navigate(Route.MyArtworkDetail.createRoute(newId)) {
                         popUpTo(Route.WritingArtwork.path) { inclusive = true }
                     }
                 },
@@ -88,16 +69,41 @@ fun NavGraph(
             )
         }
 
+        // 4. 상세 조회
         composable(
             route = Route.MyArtworkDetail.path,
             arguments = listOf(navArgument("workId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val workId = backStackEntry.arguments?.getInt("workId") ?: 0
+        ) { entry ->
+            val workId = entry.arguments?.getInt("workId") ?: 0
             MyArtWorkDetailScreen(
                 workId = workId,
                 onNavigateToEdit = { idToEdit ->
                     navController.navigate(Route.WritingArtwork.createEditRoute(idToEdit))
                 },
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // 5. 자유게시판 상세
+        composable(
+            "free/detail/{postId}",
+            arguments = listOf(navArgument("postId") { type = NavType.IntType })
+        ) { entry ->
+            val postId = entry.arguments?.getInt("postId") ?: 0
+            FreeDetailScreen(
+                postId = postId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // 6. 아카이브 둘러보기 상세
+        composable(
+            "archive/detail/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { entry ->
+            val id = entry.arguments?.getInt("id") ?: 0
+            ArchiveExploreDetailScreen(
+                id = id,
                 onBackClick = { navController.popBackStack() }
             )
         }

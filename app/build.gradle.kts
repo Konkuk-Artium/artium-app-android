@@ -24,7 +24,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"${properties["base.url"]}\"")
+
+        buildConfigField("String", "LOGIN_URL", "\"${properties["LOGIN_SERVER_URL"]}\"")
+        buildConfigField("String", "DATA_URL", "\"${properties["DATA_SERVER_URL"]}\"")
     }
 
     buildTypes {
@@ -86,6 +88,32 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlin.serialization.converter)
     implementation(libs.kotlinx.serialization.json)
+
+    // 강제 고정 - 어떤 라이브러리가 1.7.3을 끌어와도 무시함
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3") {
+        version {
+            strictly("1.6.3")
+        }
+    }
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3") {
+        version {
+            strictly("1.6.3")
+        }
+    }
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-okio:1.6.3") {
+        version {
+            strictly("1.6.3")
+        }
+    }
+
+    // Retrofit & Gson
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // WebView
+    implementation("com.google.accompanist:accompanist-webview:0.34.0")
 
     // Hilt
     implementation(libs.hilt.android)
