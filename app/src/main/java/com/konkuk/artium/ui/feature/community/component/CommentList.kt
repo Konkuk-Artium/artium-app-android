@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.konkuk.artium.ui.feature.community.viewmodel.Comment
 import com.konkuk.artium.ui.theme.ArtiumTheme
 
 @Composable
@@ -16,7 +17,7 @@ fun CommentList(
     Column {
         comments.forEach { comment ->
             CommentItem(
-                id = comment.id,  // ⭐ ID 전달!!
+                id = comment.id,
                 author = comment.author,
                 time = comment.time,
                 content = comment.content,
@@ -33,14 +34,6 @@ fun CommentList(
     }
 }
 
-
-data class Comment(
-    val id: Int,
-    val author: String,
-    val time: String,
-    val content: String
-)
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewCommentList() {
@@ -48,10 +41,9 @@ fun PreviewCommentList() {
         CommentList(
             comments = listOf(
                 Comment(1, "익명", "5분 전", "이 공연 진짜 최고였어요."),
-                Comment(2, "다른사람", "1시간 전", "전 개인적으로 조금 아쉬웠어요."),
-            ),
-            myUserName = "익명",
-            onDelete = { id -> println("삭제 요청: $id") }
+                Comment(2, "다른사람", "1시간 전", "전 개인적으로 조금 아쉬웠어요.")
+            )
         )
+
     }
 }
