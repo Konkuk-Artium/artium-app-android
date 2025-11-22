@@ -1,6 +1,7 @@
 package com.konkuk.artium.ui.feature.archive.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,14 +9,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.konkuk.artium.navigation.ArtiumBottomBar
 import com.konkuk.artium.ui.common.component.ArtiumTopBar
 import com.konkuk.artium.ui.feature.archive.component.MyArtworkList
@@ -23,100 +27,120 @@ import com.konkuk.artium.ui.feature.archive.component.RecentWorkItem
 import com.konkuk.artium.ui.feature.archive.component.RecentWorkList
 import com.konkuk.artium.ui.feature.archive.component.SectionTitle
 import com.konkuk.artium.ui.feature.archive.component.TotalWorksBar
-import com.konkuk.artium.ui.theme.ArtiumTheme
+import com.konkuk.artium.ui.feature.archive.viewmodel.ArchiveViewModel
 
 @Composable
 fun ArchiveScreen(
     modifier: Modifier = Modifier,
-    onCardClick: (RecentWorkItem) -> Unit = {},
-    onArrowClick: (RecentWorkItem) -> Unit = {},
-    onButtonClick: () -> Unit ={},
+    viewModel: ArchiveViewModel = hiltViewModel(),
+    onCardClick: () -> Unit,
+    onArrowClick: () -> Unit,
+    onButtonClick: () -> Unit,
+    onNavigateToDetail: (Long) -> Unit,
     onNavigateToWriteArtWork: () -> Unit,
-    onNavigateToDetail: (Int) -> Unit,
-    works: List<Work>? = null// ❗ null일 땐 목업 데이터로 대체
+    onNavigateToTotalWorks: () -> Unit = {},
 ) {
+    // 1. ViewModel의 uiState를 구독합니다. (수정됨)
+    val uiState by viewModel.uiState.collectAsState()
+
+    // 2. uiState에서 최근 작품 리스트를 가져옵니다.
+    val recentWorks = uiState.recentWorks
+
+    // 3. 화면 시작 시 데이터 로드 함수 호출 (수정됨: loadArchiveList -> loadArchives)
+    LaunchedEffect(Unit) {
+        viewModel.loadArchives()
+    }
+
     Scaffold(
         modifier = modifier
             .statusBarsPadding()
-            .background(ArtiumTheme.colors.white)
             .navigationBarsPadding(),
         topBar = {
             ArtiumTopBar(
                 title = "Artium",
                 actionText = "작품쓰기",
-                onActionClick = {
-                    onNavigateToWriteArtWork()
-                }
+                onActionClick = onNavigateToWriteArtWork
             )
         },
         bottomBar = {
-            ArtiumBottomBar(modifier = Modifier.navigationBarsPadding())
-        },
-    ) { innerPadding ->
-        Column(
-            modifier = modifier
-                .fillMaxSize().background(Color.White)
-                .padding(innerPadding)
-                .verticalScroll(
-                    rememberScrollState()
-                )
+            ArtiumBottomBar()
+        }
+    ) { padding ->
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(padding)
         ) {
-            // 목업 데이터
-            val mockList = listOf(
-                RecentWorkItem(0, "오페라<토스카>", "", 4.5f),
-                RecentWorkItem(1, "이자벨 드 가네", "", 3.0f),
-                RecentWorkItem(2, "라이프 오브 파이", "", 4.0f)
-            )
-            val data = works ?: mockList
-
-            if (data.isEmpty()) {
-                // 🟤 미기록 화면
-                EmptyArchiveScreen()
+            if (recentWorks.isEmpty()) {
+                // 1. 데이터가 없을 때 -> 정중앙(Center) 배치
+                EmptyArchiveScreen(
+                    modifier = Modifier.align(Alignment.Center),
+                    onNavigateToWriteArtWork = {}
+                )
             } else {
-                // 🟢 기록이 있는 경우
+                // 2. 데이터가 있을 때
 
-            // 섹션 제목
-            SectionTitle(text = "최근에 본 작품")
-            Spacer(modifier = modifier.height(12.dp))
-            // 최근에 본 작품 리스트
-            RecentWorkList(
-                modifier = Modifier,
-                works = mockList,
-                onCardClick = { recentWorkItem ->
-                    // RecentWorkItem에서 ID를 추출하여 상세화면 이동 콜백 호출
-                    onNavigateToDetail(recentWorkItem.id)
-                },
-                onArrowClick = onArrowClick
-            )
-            Spacer(modifier = modifier.height(12.dp))
+                // -------------------------
+                // 1) 최근에 본 작품
+                // -------------------------
+                SectionTitle(text = "최근에 본 작품")
+                Spacer(Modifier.height(12.dp))
 
-            // 내 작품 리스트
-            Column (
-                modifier = modifier
-                    .padding(18.dp, 12.dp)
-
-            ){
-                MyArtworkList(
-                    onNavigateToDetail = onNavigateToDetail
-                )
-                Spacer(modifier = modifier.height(30.dp))
-                TotalWorksBar(
-                    onTotalButtonClick= onButtonClick
+                RecentWorkList(
+                    works = recentWorks.map {
+                        RecentWorkItem(
+                            id = it.id,
+                            title = it.title,
+                            imageUrl = it.imageUrl,
+                            rating = it.rating
+                        )
+                    },
+                    onCardClick = { item ->
+                        onNavigateToDetail(item.id)
+                    },
+                    onArrowClick = { item ->
+                        onNavigateToDetail(item.id)
+                    }
                 )
 
+                Spacer(Modifier.height(20.dp))
+
+                // -------------------------
+                // 2) 내 작품 목록
+                // -------------------------
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 18.dp)
+                ) {
+                    MyArtworkList(
+                        onNavigateToDetail = { id ->
+                            onNavigateToDetail(id.toLong())
+                        }
+                    )
+
+                    Spacer(Modifier.height(30.dp))
+
+                    TotalWorksBar(
+                        onTotalButtonClick = onNavigateToTotalWorks
+                    )
+                }
+
+                Spacer(Modifier.height(20.dp))
             }
-            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
-    }
-
 @Preview(showBackground = true)
 @Composable
 private fun ArchiveScreenPreview() {
     ArchiveScreen(
-        onNavigateToDetail = { workId -> /* Preview */ },
-        onNavigateToWriteArtWork = { /* Preview */ }
+        onCardClick = {},
+        onArrowClick = {},
+        onButtonClick = {},
+        onNavigateToDetail = { _ -> },
+        onNavigateToWriteArtWork = { },
+        onNavigateToTotalWorks = {}
     )
-
 }
